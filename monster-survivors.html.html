@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <title>Monster Survivors - Play Free Online Survival Game | MonsterSurvivors.com</title>
+    <meta name="title" content="Monster Survivors - Play Free Online Survival Game | MonsterSurvivors.com">
+    <meta name="description" content="Play Monster Survivors online for free! Battle waves of monsters, collect power-ups, and survive as long as possible in this action-packed survival game.">
+    <meta name="keywords" content="Monster Survivors, survival game, online game, free game, action game">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://monstersurvivors.com/">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://monstersurvivors.com/">
+    <meta property="og:title" content="Monster Survivors - Play Free Online Survival Game">
+    <meta property="og:description" content="Battle waves of monsters and survive in this action-packed game.">
+    
+    <link rel="dns-prefetch" href="https://cloud.onlinegames.io">
+    <link rel="preconnect" href="https://cloud.onlinegames.io" crossorigin>
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👾</text></svg>">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        apple: {
+                            blue: '#0071E3',
+                            blueHover: '#0077ED',
+                            dark: '#1D1D1F',
+                            gray: '#86868B',
+                            lightGray: '#F5F5F7',
+                            silver: '#D2D2D7',
+                            green: '#30D158',
+                            purple: '#BF5AF2',
+                            orange: '#FF9F0A',
+                            red: '#FF3B30',
+                            teal: '#5AC8FA',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['SF Pro Display', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        html { scroll-behavior: smooth; }
+        
+        /* Game container */
+        .game-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+            border-radius: 20px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255,255,255,0.1) inset;
+        }
+        .game-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 20px;
+        }
+        
+        /* Skeleton animation */
+        @keyframes shimmer {
+            0% { background-position: -400px 0; }
+            100% { background-position: 400px 0; }
+        }
+        .skeleton {
+            background: linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
+            background-size: 400px 100%;
+            animation: shimmer 2s infinite linear;
+        }
+        
+        /* Spinner */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(0, 113, 227, 0.2);
+            border-top-color: #0071E3;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Pulse animation */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+        .pulse-play {
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        /* Progress bar */
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        .progress-animate {
+            animation: progress 3s ease-out forwards;
+        }
+        
+        /* Hero gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #ffffff 0%, #d1d1d6 50%, #86868b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Apple-style button */
+        .btn-apple {
+            background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4), 0 0 0 1px rgba(255,255,255,0.1) inset;
+            transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        .btn-apple:hover {
+            background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 100%);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5), 0 0 0 1px rgba(255,255,255,0.2) inset;
+            transform: translateY(-2px);
+        }
+        
+        /* Card hover */
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+        }
+        
+        /* Nav glass effect */
+        .nav-glass {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+        }
+        
+        /* Section dark theme */
+        .section-dark {
+            background: linear-gradient(180deg, #000000 0%, #1a1a1a 100%);
+        }
+        
+        /* Glow effect */
+        .glow-blue {
+            box-shadow: 0 0 60px rgba(0, 113, 227, 0.3);
+        }
+        
+        /* Fade in animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3a3a3a;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a4a4a;
+        }
+    </style>
+</head>
+<body class="bg-black text-white font-sans antialiased">
+
+    <!-- Navigation - Dark Glass -->
+    <nav class="nav-glass fixed top-0 left-0 right-0 z-50 border-b border-white/10">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-14">
+                <a href="/" class="flex items-center space-x-2">
+                    <span class="text-xl">👾</span>
+                    <span class="font-semibold text-white">Monster Survivors</span>
+                </a>
+                <div class="hidden sm:flex items-center space-x-8">
+                    <a href="#play" class="text-sm text-gray-300 hover:text-white transition-colors">Play Now</a>
+                    <a href="#about" class="text-sm text-gray-300 hover:text-white transition-colors">About</a>
+                    <a href="#how-to-play" class="text-sm text-gray-300 hover:text-white transition-colors">How to Play</a>
+                    <a href="#features" class="text-sm text-gray-300 hover:text-white transition-colors">Features</a>
+                </div>
+                <button id="mobile-menu-btn" class="sm:hidden p-2 rounded-lg hover:bg-white/10 transition-colors">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden sm:hidden bg-black/95 border-t border-white/10">
+            <div class="px-4 py-4 space-y-3">
+                <a href="#play" class="block py-2 text-gray-300 hover:text-white">Play Now</a>
+                <a href="#about" class="block py-2 text-gray-300 hover:text-white">About</a>
+                <a href="#how-to-play" class="block py-2 text-gray-300 hover:text-white">How to Play</a>
+                <a href="#features" class="block py-2 text-gray-300 hover:text-white">Features</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section - Dark Premium -->
+    <header class="section-dark relative overflow-hidden pt-24 pb-16 sm:pt-32 sm:pb-24">
+        <!-- Background Effects -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-apple-blue/20 rounded-full filter blur-3xl"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-apple-purple/20 rounded-full filter blur-3xl"></div>
+        </div>
+        
+        <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6 fade-in-up">
+                <span class="gradient-text">Monster Survivors</span>
+            </h1>
+            <p class="text-xl sm:text-2xl text-gray-400 max-w-3xl mx-auto mb-10 fade-in-up" style="animation-delay: 0.1s;">
+                Battle endless waves of monsters. Collect powerful upgrades. Survive as long as you can.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 fade-in-up" style="animation-delay: 0.2s;">
+                <a href="#play" class="btn-apple inline-flex items-center px-8 py-4 text-white font-semibold rounded-full text-lg">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                    </svg>
+                    Play Now Free
+                </a>
+                <div class="flex items-center space-x-4 text-gray-500">
+                    <span class="flex items-center text-sm">
+                        <svg class="w-4 h-4 text-yellow-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        </svg>
+                        4.8
+                    </span>
+                    <span class="text-gray-600">|</span>
+                    <span class="text-sm">12K+ Players</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Game Section -->
+        <section id="play" class="section-dark py-16 sm:py-24">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-white mb-3">Play Monster Survivors</h2>
+                    <p class="text-gray-400">No download required. Play instantly in your browser.</p>
+                </div>
+                
+                <!-- Game Container -->
+                <div id="game-wrapper" class="game-container glow-blue">
+                    <!-- Placeholder -->
+                    <div id="game-placeholder" class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer group rounded-2xl">
+                        <div class="absolute inset-0 skeleton rounded-2xl"></div>
+                        
+                        <!-- Monster pattern background -->
+                        <div class="absolute inset-0 flex items-center justify-center opacity-10">
+                            <div class="grid grid-cols-10 gap-2">
+                                <span class="text-3xl">👾</span><span class="text-3xl">👾</span><span class="text-3xl">👾</span><span class="text-3xl">👾</span><span class="text-3xl">👾</span>
+                                <span class="text-3xl">👾</span><span class="text-3xl">👾</span><span class="text-3xl">👾</span><span class="text-3xl">👾</span><span class="text-3xl">👾</span>
+                                <span class="text-3xl">👾</span><span class="text-3xl">👾</span><span class="text-3xl">👾</span><span class="text-3xl">👾</span><span class="text-3xl">👾</span>
+                                <span class="text-3xl">👾</span><span class="text-3xl">👾</span><span class="text-3xl">👾</span><span class="text-3xl">👾</span><span class="text-3xl">👾</span>
+                                <span class="text-3xl">👾</span><span class="text-3xl">👾</span><span class="text-3xl">👾</span><span class="text-3xl">👾</span><span class="text-3xl">👾</span>
+                                <span class="text-3xl">👾</span><span class="text-3xl">👾</span><span class="text-3xl">👾</span><span class="text-3xl">👾</span><span class="text-3xl">👾</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Play Button -->
+                        <div class="relative z-10 flex flex-col items-center">
+                            <div class="pulse-play w-24 h-24 bg-apple-blue rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300">
+                                <svg class="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                                </svg>
+                            </div>
+                            <p class="mt-5 text-white font-semibold text-lg">Click to Play</p>
+                            <p class="text-gray-400 text-sm mt-1">Loading takes 3-5 seconds</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Loading State -->
+                    <div id="game-loading" class="absolute inset-0 flex-col items-center justify-center bg-black hidden rounded-2xl">
+                        <div class="spinner mb-4"></div>
+                        <p class="text-white font-medium">Loading Monster Survivors...</p>
+                        <div class="w-48 h-1 bg-gray-800 rounded-full mt-4 overflow-hidden">
+                            <div class="progress-animate h-full bg-apple-blue rounded-full"></div>
+                        </div>
+                        <p class="text-gray-500 text-sm mt-3" id="loading-status">Initializing...</p>
+                    </div>
+                    
+                    <!-- iframe -->
+                    <iframe 
+                        id="game-iframe"
+                        src="about:blank"
+                        data-src="https://cloud.onlinegames.io/games/2025/unity/monster-survivors/index-og.html"
+                        title="Monster Survivors - Play Online"
+                        allow="autoplay; fullscreen; gamepad"
+                        allowfullscreen
+                        class="hidden"
+                    ></iframe>
+                </div>
+                
+                <!-- Controls -->
+                <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+                    <div class="flex items-center bg-white/5 border border-white/10 px-4 py-2 rounded-full">
+                        <span class="font-mono bg-white/10 text-white px-2 py-0.5 rounded text-xs mr-2">WASD</span>
+                        <span class="text-gray-400 text-sm">Move</span>
+                    </div>
+                    <div class="flex items-center bg-white/5 border border-white/10 px-4 py-2 rounded-full">
+                        <span class="font-mono bg-white/10 text-white px-2 py-0.5 rounded text-xs mr-2">SPACE</span>
+                        <span class="text-gray-400 text-sm">Attack</span>
+                    </div>
+                    <div class="flex items-center bg-white/5 border border-white/10 px-4 py-2 rounded-full">
+                        <span class="font-mono bg-white/10 text-white px-2 py-0.5 rounded text-xs mr-2">ESC</span>
+                        <span class="text-gray-400 text-sm">Pause</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="bg-apple-lightGray py-20 sm:py-28">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-apple-dark mb-4">About Monster Survivors</h2>
+                    <p class="text-apple-gray text-lg max-w-2xl mx-auto">
+                        An exhilarating action-survival game that tests your reflexes and strategic thinking.
+                    </p>
+                </div>
+                
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6">
+                        <p class="text-apple-dark text-lg leading-relaxed">
+                            <strong>Monster Survivors</strong> challenges you to outlast endless waves of increasingly powerful monsters. Each run is unique thanks to the roguelike progression system.
+                        </p>
+                        <p class="text-apple-gray leading-relaxed">
+                            As you defeat enemies, collect experience gems and unlock powerful upgrades. Choose from a variety of weapons, abilities, and passive bonuses to create your ultimate survival build.
+                        </p>
+                        
+                        <!-- Stats -->
+                        <div class="grid grid-cols-3 gap-4 pt-4">
+                            <div class="text-center p-5 bg-white rounded-2xl shadow-sm card-hover">
+                                <div class="text-3xl font-bold text-apple-blue">50+</div>
+                                <div class="text-sm text-apple-gray mt-1">Upgrades</div>
+                            </div>
+                            <div class="text-center p-5 bg-white rounded-2xl shadow-sm card-hover">
+                                <div class="text-3xl font-bold text-apple-green">20+</div>
+                                <div class="text-sm text-apple-gray mt-1">Weapons</div>
+                            </div>
+                            <div class="text-center p-5 bg-white rounded-2xl shadow-sm card-hover">
+                                <div class="text-3xl font-bold text-apple-purple">∞</div>
+                                <div class="text-sm text-apple-gray mt-1">Waves</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Features Card -->
+                    <div class="bg-white rounded-3xl p-8 shadow-lg">
+                        <h3 class="text-xl font-semibold text-apple-dark mb-6">Game Highlights</h3>
+                        <ul class="space-y-5">
+                            <li class="flex items-start">
+                                <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                                    <svg class="w-5 h-5 text-apple-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <span class="font-medium text-apple-dark">Fast-Paced Action</span>
+                                    <p class="text-apple-gray text-sm mt-1">Non-stop combat with hundreds of enemies on screen</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                                    <svg class="w-5 h-5 text-apple-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <span class="font-medium text-apple-dark">Free to Play</span>
+                                    <p class="text-apple-gray text-sm mt-1">No downloads, no payments, just pure fun</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                                    <svg class="w-5 h-5 text-apple-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <span class="font-medium text-apple-dark">Cross-Platform</span>
+                                    <p class="text-apple-gray text-sm mt-1">Play on PC, tablet, or mobile seamlessly</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center mr-4 flex-shrink-0">
+                                    <svg class="w-5 h-5 text-apple-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <span class="font-medium text-apple-dark">Regular Updates</span>
+                                    <p class="text-apple-gray text-sm mt-1">New content and features added regularly</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How to Play -->
+        <section id="how-to-play" class="section-dark py-20 sm:py-28">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">How to Play</h2>
+                    <p class="text-gray-400 text-lg">Get started in 4 simple steps</p>
+                </div>
+                
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="text-center p-6 bg-white/5 border border-white/10 rounded-2xl card-hover">
+                        <div class="w-14 h-14 bg-apple-blue rounded-2xl flex items-center justify-center mx-auto mb-5">
+                            <span class="text-white text-xl font-bold">1</span>
+                        </div>
+                        <h3 class="font-semibold text-white mb-2">Start the Game</h3>
+                        <p class="text-gray-400 text-sm">Click the play button to launch instantly in your browser.</p>
+                    </div>
+                    <div class="text-center p-6 bg-white/5 border border-white/10 rounded-2xl card-hover">
+                        <div class="w-14 h-14 bg-apple-green rounded-2xl flex items-center justify-center mx-auto mb-5">
+                            <span class="text-white text-xl font-bold">2</span>
+                        </div>
+                        <h3 class="font-semibold text-white mb-2">Move & Survive</h3>
+                        <p class="text-gray-400 text-sm">Use WASD or arrow keys to navigate around enemies.</p>
+                    </div>
+                    <div class="text-center p-6 bg-white/5 border border-white/10 rounded-2xl card-hover">
+                        <div class="w-14 h-14 bg-apple-purple rounded-2xl flex items-center justify-center mx-auto mb-5">
+                            <span class="text-white text-xl font-bold">3</span>
+                        </div>
+                        <h3 class="font-semibold text-white mb-2">Level Up</h3>
+                        <p class="text-gray-400 text-sm">Collect XP gems and choose powerful upgrades.</p>
+                    </div>
+                    <div class="text-center p-6 bg-white/5 border border-white/10 rounded-2xl card-hover">
+                        <div class="w-14 h-14 bg-apple-orange rounded-2xl flex items-center justify-center mx-auto mb-5">
+                            <span class="text-white text-xl font-bold">4</span>
+                        </div>
+                        <h3 class="font-semibold text-white mb-2">Beat Records</h3>
+                        <p class="text-gray-400 text-sm">Survive as long as possible and set new high scores!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="bg-apple-lightGray py-20 sm:py-28">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl sm:text-4xl font-bold text-apple-dark mb-4">Why Players Love It</h2>
+                    <p class="text-apple-gray text-lg">Join thousands of players worldwide</p>
+                </div>
+                
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <article class="bg-white rounded-2xl p-6 card-hover">
+                        <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-apple-red" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-apple-dark mb-2">Addictive Gameplay</h3>
+                        <p class="text-apple-gray text-sm">Easy to learn, hard to master. Each run feels fresh.</p>
+                    </article>
+                    
+                    <article class="bg-white rounded-2xl p-6 card-hover">
+                        <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-apple-blue" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-apple-dark mb-2">Quick Sessions</h3>
+                        <p class="text-apple-gray text-sm">Perfect for short breaks. 10-30 minutes per game.</p>
+                    </article>
+                    
+                    <article class="bg-white rounded-2xl p-6 card-hover">
+                        <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-apple-green" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-apple-dark mb-2">Safe & Secure</h3>
+                        <p class="text-apple-gray text-sm">No downloads required. Play safely in browser.</p>
+                    </article>
+                    
+                    <article class="bg-white rounded-2xl p-6 card-hover">
+                        <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-apple-purple" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-apple-dark mb-2">Active Community</h3>
+                        <p class="text-apple-gray text-sm">Join thousands competing for high scores daily.</p>
+                    </article>
+                    
+                    <article class="bg-white rounded-2xl p-6 card-hover">
+                        <div class="w-12 h-12 bg-orange-50 rounded-xl flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-apple-orange" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-apple-dark mb-2">Instant Play</h3>
+                        <p class="text-apple-gray text-sm">No installation. Click and play immediately.</p>
+                    </article>
+                    
+                    <article class="bg-white rounded-2xl p-6 card-hover">
+                        <div class="w-12 h-12 bg-teal-50 rounded-xl flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-apple-teal" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-apple-dark mb-2">Regular Updates</h3>
+                        <p class="text-apple-gray text-sm">New weapons, characters, and features often.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-16 border-t border-white/10">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <span class="text-2xl">👾</span>
+                        <span class="font-semibold text-lg">Monster Survivors</span>
+                    </div>
+                    <p class="text-gray-500 text-sm leading-relaxed">
+                        The ultimate free-to-play survival action game. Play now in your browser.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 text-white">Quick Links</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#play" class="hover:text-white transition-colors">Play Now</a></li>
+                        <li><a href="#about" class="hover:text-white transition-colors">About</a></li>
+                        <li><a href="#how-to-play" class="hover:text-white transition-colors">How to Play</a></li>
+                        <li><a href="#features" class="hover:text-white transition-colors">Features</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 text-white">Categories</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Action Games</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Survival Games</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Browser Games</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Free Games</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4 text-white">Legal</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-white/10 mt-12 pt-8 text-center text-sm text-gray-500">
+                <p>&copy; 2025 MonsterSurvivors.com. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Game loading
+        const gamePlaceholder = document.getElementById('game-placeholder');
+        const gameLoading = document.getElementById('game-loading');
+        const gameIframe = document.getElementById('game-iframe');
+        const loadingStatus = document.getElementById('loading-status');
+        
+        const loadingMessages = [
+            'Initializing game engine...',
+            'Loading game assets...',
+            'Preparing monsters...',
+            'Almost ready...'
+        ];
+        let messageIndex = 0;
+        
+        function loadGame() {
+            gamePlaceholder.classList.add('hidden');
+            gameLoading.classList.remove('hidden');
+            gameLoading.classList.add('flex');
+            
+            const messageInterval = setInterval(() => {
+                messageIndex = (messageIndex + 1) % loadingMessages.length;
+                loadingStatus.textContent = loadingMessages[messageIndex];
+            }, 800);
+            
+            gameIframe.onload = function() {
+                clearInterval(messageInterval);
+                gameLoading.classList.add('hidden');
+                gameLoading.classList.remove('flex');
+                gameIframe.classList.remove('hidden');
+                gameIframe.focus();
+            };
+            
+            gameIframe.src = gameIframe.dataset.src;
+        }
+        
+        gamePlaceholder.addEventListener('click', loadGame);
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
